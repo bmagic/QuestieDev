@@ -778,6 +778,7 @@ function QuestieQuest:GetAllQuestObjectives(Quest)
             end
             Quest.Objectives[i]:Update()
 
+                    
             if count == 1 and counthack(Quest.ObjectiveData) == 1 then
                 Quest.Objectives[i].Id = Quest.ObjectiveData[1].Id
             elseif Quest.ObjectiveData ~= nil then
@@ -789,6 +790,16 @@ function QuestieQuest:GetAllQuestObjectives(Quest)
                             Quest.Objectives[i].Id = v.Id
                             Quest.Objectives[i].Coordinates = v.Coordinates
                             v.ObjectiveRef = Quest.Objectives[i]
+                        end
+                    end
+                end
+
+                -- 2nd pass (fix for missing language data)
+                if Quest.Objectives[i].Id == nil then
+                    for k,v in pairs(Quest.ObjectiveData) do
+                        if objectiveType == v.Type then
+                            -- When nothing is found (other languages) fill it.
+                            Quest.Objectives[i].Id = v.Id
                         end
                     end
                 end
